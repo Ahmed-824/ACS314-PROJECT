@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/configs/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,15 +11,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return
-    Scaffold(bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: primaryColor,
+    return Scaffold(
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.blueAccent,
         items: <Widget>[
           Icon(Icons.dashboard, size: 30),
           Icon(Icons.category, size: 30),
           Icon(Icons.line_style, size: 30),
           Icon(Icons.person, size: 30),
         ],
-        onTap: (index) { }));
+        onTap: (index) {
+          //Handle button tap
+        },
+      ),
+    );
   }
 }

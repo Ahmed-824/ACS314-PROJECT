@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_application_1/configs/colors.dart';
+import 'package:flutter_application_1/controllers/logincontroller.dart';
+import 'package:get/get.dart';
+
+LogincController logincontroller = LogincController() = Get.put(
+  LogincController(),
+);
+
+TextEditingController usernameController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,19 +18,32 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Color? get backgroundColor => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.pinkAccent,
+      //   title: Text('LogIn Page', style: TextStyle(color: Colors.white)),
+      //   centerTitle: true,
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Text(
+            //   "Jumia Market Place",
+            //   style: TextStyle(
+            //     color: Colors.purple,
+            //     fontSize: 18.5,
+            //     fontWeight: FontWeight.w800,
+            //   ),
+            // ),
             Image.asset('assets/jumia.png'),
-
-            // Username Label
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
               child: Row(
@@ -30,21 +51,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(
                     'Enter Username',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                   ),
                 ],
               ),
             ),
-
-            // Username Field
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
               child: TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
-                  hintText: "Email or Phone Number", // ✅ Fixed: hint → hintText
+                  hint: Text("Email or Phone Number"),
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -52,10 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-
             SizedBox(height: 20),
-
-            // Password Label
             Padding(
               padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
               child: Row(
@@ -63,56 +78,65 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(
                     'Enter Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                   ),
                 ],
               ),
             ),
-
-            // Password Field
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: TextField(
-                obscureText: true,
+              child: Obx(
+                  ()=>
+               TextField(
+                controller: passwordController,
+                obscureText: logincontroller.passwordVisible.value,
                 decoration: InputDecoration(
-                  hintText: "PIN or Password", // ✅ Fixed: hint → hintText
+                  hint: Text("PIN or Password"),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                   prefixIcon: Icon(Icons.lock),
+                  suffixIcon: Icon(Icons.visibility_off),
                 ),
               ),
             ),
-
+            // MaterialButton(
+            //   onPressed: () {},
+            //   child: Text('LogIn'),
+            //   color: Colors.pinkAccent,
+            //   textColor: Colors.white,
+            // ),
             SizedBox(height: 20),
-
-            // Login Button — ✅ Fixed: wrapped Container in GestureDetector properly
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: GestureDetector(
-                onTap: () {
-                  Get.offAndToNamed("/homescreen");
-                },
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Container(
                   height: 50,
                   width: double.infinity,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: primaryColor,
                     borderRadius: BorderRadius.circular(20),
                   ),
+
                   child: Text(
-                    "Log in",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    "Log In",
+                    style: TextStyle(color: backgroundColor, fontSize: 14),
                   ),
                 ),
               ),
+              onTap: () {
+                bool success = logincontroller.login(
+                  usernameController.text,
+                  passwordController.text,
+                );
+                if (success) {
+                  Get.offAndToNamed("/homescreen");
+                } else {
+                  Get.snackbar("Invalid Login", "/login");
+                }
+              },
             ),
-
-            // Sign Up Row
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 30, 0),
               child: Row(
@@ -123,13 +147,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 18),
                   ),
                   GestureDetector(
+                    child: Text(
+                      "SignUp",
+                      style: TextStyle(color: primaryColor, fontSize: 18),
+                    ),
                     onTap: () {
                       Get.offAndToNamed("/signup");
                     },
-                    child: Text(
-                      " SignUp",
-                      style: TextStyle(color: primaryColor, fontSize: 18),
-                    ),
                   ),
                 ],
               ),
