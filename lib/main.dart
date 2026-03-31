@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/views/login.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-
-import 'configs/routes.dart';
+import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'providers/player_provider.dart';
+import 'screens/auth/login_screen.dart';
 
 void main() {
   runApp(
-    GetMaterialApp(
-      initialRoute: "/",
-      getPages: routes,
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PlayerProvider()),
+      ],
+      child: const SpotifyApp(),
     ),
   );
+}
+
+class SpotifyApp extends StatelessWidget {
+  const SpotifyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        textTheme: GoogleFonts.montserratTextTheme(ThemeData.dark().textTheme),
+      ),
+      home: const LoginScreen(),
+    );
+  }
 }
