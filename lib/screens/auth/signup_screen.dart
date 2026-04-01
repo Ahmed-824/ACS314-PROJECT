@@ -188,7 +188,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 onTap: () {
-                  Get.offAndToNamed("/homescreen");
+                  Get.offAndToNamed("/home_screen");
                 },
               ),
 
