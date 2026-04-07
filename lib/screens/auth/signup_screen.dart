@@ -1,224 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/colors.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'login_screen.dart'; 
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
-  @override
-  State<SignupScreen> createState() => _SignupScreenState();
-}
-
-class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              SizedBox(height: 60),
-
-              // ── Logo ──────────────────────────────────
-              Image.asset("assets/jumia_logo.png", width: 200),
-
-              // ── Full Name ─────────────────────────────
-              Padding(
-                padding: EdgeInsets.fromLTRB(25, 0, 20, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Full Name",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ],
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Hero(
+                  tag: 'logo',
+                  child: Icon(Icons.library_music, color: Colors.green, size: 100),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hint: Text("Full Name"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    prefixIcon: Icon(Icons.person),
+                const SizedBox(height: 10),
+                const Text(
+                  "Create Account",
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: 24, 
+                    fontWeight: FontWeight.bold
                   ),
                 ),
-              ),
-
-              SizedBox(height: 20),
-
-              // ── Email ─────────────────────────────────
-              Padding(
-                padding: EdgeInsets.fromLTRB(25, 0, 20, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Email",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hint: Text("Email Address"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              // ── Phone Number ──────────────────────────
-              Padding(
-                padding: EdgeInsets.fromLTRB(25, 0, 20, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Phone Number",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hint: Text("Phone Number"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    prefixIcon: Icon(Icons.phone),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              // ── Password ──────────────────────────────
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Enter Password",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hint: Text("PIN or Password"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    prefixIcon: Icon(Icons.lock),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              // ── Confirm Password ──────────────────────
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25, 0, 20, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Confirm Password",
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hint: Text("Re-enter Password"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    prefixIcon: Icon(Icons.lock_outline),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              // ── Sign Up Button ────────────────────────
-              GestureDetector(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                const SizedBox(height: 40),
+                
+                _buildTextField(hint: 'Username'),
+                const SizedBox(height: 20),
+                
+                _buildTextField(hint: 'Email'),
+                const SizedBox(height: 20),
+                
+                _buildTextField(hint: 'Password', isPassword: true),
+                const SizedBox(height: 30),
+                
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
                     ),
                   ),
-                ),
-                onTap: () {
-                  Get.offAndToNamed("/home_screen");
-                },
-              ),
-
-              // ── Already have an account ───────────────
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 30.0, 0),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    Text(
-                      "Already have an account? ",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    GestureDetector(
-                      child: Text(
-                        "Log In",
-                        style: TextStyle(color: primaryColor, fontSize: 18),
+                  onPressed: () {
+                    // 1. Show a success message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Account created successfully! Please log in.'),
+                        backgroundColor: Colors.green,
                       ),
-                      onTap: () {
-                        Get.toNamed("/");
-                      },
-                    ),
-                  ],
+                    );
+
+                    // 2. Redirect to Login instead of Home
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Sign Up', 
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+                  ),
                 ),
-              ),
-
-              SizedBox(height: 30),
-
-            ],
+                
+                const SizedBox(height: 20),
+                
+                TextButton(
+                  onPressed: () => Navigator.pushReplacement(
+                    context, 
+                    MaterialPageRoute(builder: (_) => const LoginScreen())
+                  ),
+                  child: const Text(
+                    "Already have an account? Log In",
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({required String hint, bool isPassword = false}) {
+    return TextField(
+      obscureText: isPassword,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.grey),
+        filled: true,
+        fillColor: Colors.grey[900],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10), 
+          borderSide: BorderSide.none
         ),
       ),
     );
