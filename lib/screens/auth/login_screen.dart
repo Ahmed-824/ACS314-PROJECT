@@ -1,9 +1,57 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
-import 'signup_screen.dart'; // Import the signup screen
+import 'signup_screen.dart'; 
+import '../../services/api_service.dart'; // Import your ApiService
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget { // 1. Changed to StatefulWidget
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  // 2. Define Controllers
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  // 3. Login Logic
+  void _handleLogin() async {
+    setState(() => _isLoading = true);
+
+    final result = await ApiService.login(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (result['code'] == 1) {
+      // Success! Move to Home
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      // Failure! Show error from PHP
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message'] ?? 'Login failed'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +67,7 @@ class LoginScreen extends StatelessWidget {
             
             // Email Field
             TextField(
+              controller: _emailController, // 4. Link Controller
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -35,6 +84,7 @@ class LoginScreen extends StatelessWidget {
             
             // Password Field
             TextField(
+              controller: _passwordController, // 5. Link Controller
               obscureText: true,
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -51,28 +101,25 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 30),
             
             // Login Button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
-              onPressed: () => Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-              ),
-              child: const Text(
-                'Log In', 
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
+            _isLoading 
+              ? const CircularProgressIndicator(color: Colors.green)
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
+                  onPressed: _handleLogin, // 6. Call Login Logic
+                  child: const Text(
+                    'Log In', 
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
             
             const SizedBox(height: 20),
             
-            // NEW: Link to go back to SignUpScreen
             TextButton(
               onPressed: () {
-                // We use pushReplacement so the user doesn't create a massive stack of screens
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const SignUpScreen()),
