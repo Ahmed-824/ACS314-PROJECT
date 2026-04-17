@@ -15,11 +15,22 @@ class Song {
 
   factory Song.fromJson(Map<String, dynamic> json) {
     return Song(
-      id: json['id'].toString(),
-      title: json['title'],
-      artist: json['artist'],
-      coverUrl: json['coverUrl'],
-      audioUrl: json['audioUrl'],
+      // 1. Matches column 'id'
+      id: json['id']?.toString() ?? '',
+      
+      // 2. Matches column 'title'
+      title: json['title'] ?? 'Unknown Title',
+      
+      // 3. Matches column 'artist'
+      artist: json['artist'] ?? 'Unknown Artist',
+      
+      // 4. Matches column 'coverUrl'
+      // Since the DB has the full URL, we grab it directly.
+      coverUrl: json['coverUrl'] ?? '',
+          
+      // 5. Matches column 'audioUrl'
+      // This fixes the "Empty src attribute" crash!
+      audioUrl: json['audioUrl'] ?? '',
     );
   }
 }

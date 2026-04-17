@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/player_provider.dart';
 import '../../models/song_model.dart';
 import '../../widgets/mini_player.dart';
-import '../../services/api_service.dart'; // 1. Import your service
+import '../../services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,16 +22,13 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // 2. Use FutureBuilder to call your backend link
           FutureBuilder<List<Song>>(
-            future: ApiService.fetchSongs(), // This calls http://spotify.test/read.php
+            future: ApiService.fetchSongs(), 
             builder: (context, snapshot) {
-              // While waiting for data (Loading)
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator(color: Colors.green));
               }
 
-              // If there is an error
               if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(
                   child: Text('No songs found. Check your backend!', 
@@ -40,6 +37,14 @@ class HomeScreen extends StatelessWidget {
               }
 
               final songs = snapshot.data!;
+
+              // --- CRITICAL UPDATE START ---
+              // We use addPostFrameCallback to update the playlist in the provider 
+              // without triggering a "build during build" error.
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.read<PlayerProvider>().setPlaylist(songs);
+              });
+              // --- CRITICAL UPDATE END ---
 
               return ListView.builder(
                 padding: const EdgeInsets.only(bottom: 100),
@@ -56,7 +61,12 @@ class HomeScreen extends StatelessWidget {
                         height: 50, 
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => 
-                          Container(color: Colors.grey, width: 50, height: 50), // Fallback if image fails
+                          Container(
+                            color: Colors.grey[900], 
+                            width: 50, 
+                            height: 50, 
+                            child: const Icon(Icons.music_note, color: Colors.white24)
+                          ), 
                       ),
                     ),
                     title: Text(
@@ -69,6 +79,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     trailing: const Icon(Icons.more_vert, color: Colors.grey),
                     onTap: () {
+                      // This starts the song and sets the index in the Provider
                       context.read<PlayerProvider>().playSong(song);
                     },
                   );
