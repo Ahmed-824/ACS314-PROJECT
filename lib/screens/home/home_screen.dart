@@ -38,13 +38,13 @@ class HomeScreen extends StatelessWidget {
 
               final songs = snapshot.data!;
 
-              // --- CRITICAL UPDATE START ---
-              // We use addPostFrameCallback to update the playlist in the provider 
+              
+              //  used addPostFrameCallback to update the playlist in the provider 
               // without triggering a "build during build" error.
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 context.read<PlayerProvider>().setPlaylist(songs);
               });
-              // --- CRITICAL UPDATE END ---
+             
 
               return ListView.builder(
                 padding: const EdgeInsets.only(bottom: 100),
